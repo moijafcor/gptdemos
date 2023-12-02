@@ -1,0 +1,10 @@
+python-dotenv
+cassio
+datasets
+langchain
+openai
+tiktoken
+huggingface_hub
+dotenv
+streamlit
+langchain_experimental
