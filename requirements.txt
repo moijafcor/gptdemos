@@ -1,0 +1,1 @@
+pip install cassio datasets faiss-cpu huggingface_hub langchain langchain_experimental openai pypdf2 python-dotenv streamlit tiktoken
