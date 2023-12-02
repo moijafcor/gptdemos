@@ -17,7 +17,7 @@ if not sys.warnoptions:
     warnings.simplefilter("ignore")
 
 
-def main():
+def main() -> None:
     # llm = OpenAI(model_name='code-davinci-002',
     #              temperature=0,
     #              max_tokens=512)
