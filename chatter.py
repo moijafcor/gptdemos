@@ -43,8 +43,10 @@ def chatter(
         api_key=os.environ.get("OPENAI_API_KEY"),
     )
 
+    messages.append(tuning)
+    print(f"System: {personality}")
+
     while True:
-        messages.append(tuning)
         user_text = input("User: ")
 
         # Add the user message to the conversation history
@@ -57,7 +59,6 @@ def chatter(
 
         chatbot_response = response.choices[0].message.content
         if verbose == "yes":
-            print(f"Chatbot: {chatbot_response}")
             print("***")
 
         # Add chatbot message to the conversation history
