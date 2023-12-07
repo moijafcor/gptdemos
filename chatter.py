@@ -11,7 +11,7 @@ dotenv.load_dotenv()
 def chatter(
     personality: str = "You are a sweet old helpful grandma",
     openai_llm_model_name: str = "gpt-3.5-turbo",
-    verbose: str = "Yes",
+    verbose: str = "yes",
 ) -> None:
     """
     A function that simulates a conversation between a user and a GPT personality using OpenAI's LLM_MODEL.
@@ -40,7 +40,6 @@ def chatter(
     encoding_name = "cl100k_base"
 
     client = OpenAI(
-        # This is the default and can be omitted
         api_key=os.environ.get("OPENAI_API_KEY"),
     )
 
@@ -57,21 +56,24 @@ def chatter(
         )
 
         chatbot_response = response.choices[0].message.content
-        if verbose == "Yes":
+        if verbose == "yes":
             print(f"Chatbot: {chatbot_response}")
             print("***")
 
-        # Add grandmas message to the conversation history
+        # Add chatbot message to the conversation history
         messages.append({"role": "assistant", "content": chatbot_response})
 
         for i, message in enumerate(messages):
-            print(f"{i} - {message['role']}: {message['content']}")
-            total_tokens.append(
-                num_tokens_from_string(message["content"], encoding_name)
-            )
+            if verbose == "yes":
+                print(f"{i} - {message['role']}: {message['content']}")
+                total_tokens.append(
+                    num_tokens_from_string(message["content"], encoding_name)
+                )
+            else:
+                print(f"{message['role']}: {message['content']}")
 
-        total_tokens_2 = sum(total_tokens)
-        if verbose == "Yes":
+        if verbose == "yes":
+            total_tokens_2 = sum(total_tokens)
             print(f"Tokens: {total_tokens_2}")
             print("***")
 
@@ -93,12 +95,12 @@ if __name__ == "__main__":
     parser.add_argument(
         "--verbose",
         type=str,
-        default="Yes",
+        default="yes",
         help="Toggles printing message information and stats.",
     )
     args = parser.parse_args()
     chatter(
         personality=args.personality,
         openai_llm_model_name=args.model,
-        verbose=args.verbose,
+        verbose=args.verbose.lower(),
     )
