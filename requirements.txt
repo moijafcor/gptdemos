@@ -1,4 +1,4 @@
-tiktoken aiohttp==3.9.1
+aiohttp==3.9.1
 aiosignal==1.3.1
 altair==5.2.0
 annotated-types==0.6.0
@@ -104,7 +104,7 @@ streamlit-chat==0.1.1
 sympy==1.12
 tenacity==8.2.3
 threadpoolctl==3.2.0
-tiktoken==0.5.1
+tiktoken==0.5.2
 tokenizers==0.15.0
 toml==0.10.2
 toolz==0.12.0
