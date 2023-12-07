@@ -24,10 +24,6 @@ while True:
     # Add the user message to the conversation history
     messages.append({"role": "user", "content": user_text})
 
-    # print(messages)
-    # total_tokens_1 = num_tokens_from_string(messages[0]["content"], ENCODING_NAME)
-    # print(f"Tokens: {total_tokens_1}")
-
     response = client.chat.completions.create(
         messages=messages,
         model=MODEL,
@@ -39,17 +35,10 @@ while True:
     # Add grandmas message to the conversation history
     messages.append({"role": "assistant", "content": granny_response})
 
-    print(messages)
     for i, message in enumerate(messages):
-        if i % 2 == 0:
-            print(f"User: {message['content']}")
-            total_tokens.append(
-                num_tokens_from_string(message["content"], ENCODING_NAME)
-            )
-        else:
-            print(f"Granny: {message['content']}")
-            total_tokens.append(
-                num_tokens_from_string(message["content"], ENCODING_NAME)
-            )
+        print(f"{message['role']}: {message['content']}")
+        total_tokens.append(num_tokens_from_string(message["content"], ENCODING_NAME))
+
     total_tokens_2 = sum(total_tokens)
     print(f"Tokens: {total_tokens_2}")
+    print("***")
