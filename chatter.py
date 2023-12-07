@@ -11,6 +11,7 @@ dotenv.load_dotenv()
 def chatter(
     personality: str = "You are a sweet old helpful grandma",
     openai_llm_model_name: str = "gpt-3.5-turbo",
+    verbose: str = "Yes",
 ) -> None:
     """
     A function that simulates a conversation between a user and a GPT personality using OpenAI's LLM_MODEL.
@@ -26,6 +27,7 @@ def chatter(
     Args:
         personality (str): The initial system message representing the personality of the grandma. Defaults to "You are a sweet old helpful grandma".
         openai_llm_model_name (str): The name of the OpenAI LLM_MODEL to use. Defaults to "gpt-3.5-turbo".
+        verbose (str): Toggles printing message information and stats.
 
     Returns:
         None
@@ -55,8 +57,9 @@ def chatter(
         )
 
         chatbot_response = response.choices[0].message.content
-        print(f"Chatbot: {chatbot_response}")
-        print("***")
+        if verbose == "Yes":
+            print(f"Chatbot: {chatbot_response}")
+            print("***")
 
         # Add grandmas message to the conversation history
         messages.append({"role": "assistant", "content": chatbot_response})
@@ -68,8 +71,9 @@ def chatter(
             )
 
         total_tokens_2 = sum(total_tokens)
-        print(f"Tokens: {total_tokens_2}")
-        print("***")
+        if verbose == "Yes":
+            print(f"Tokens: {total_tokens_2}")
+            print("***")
 
 
 if __name__ == "__main__":
@@ -86,5 +90,15 @@ if __name__ == "__main__":
         default="gpt-3.5-turbo",
         help="The name of the OpenAI LLM_MODEL to use. Defaults to 'gpt-3.5-turbo'.",
     )
+    parser.add_argument(
+        "--verbose",
+        type=str,
+        default="Yes",
+        help="Toggles printing message information and stats.",
+    )
     args = parser.parse_args()
-    chatter(personality=args.personality, openai_llm_model_name=args.model)
+    chatter(
+        personality=args.personality,
+        openai_llm_model_name=args.model,
+        verbose=args.verbose,
+    )
