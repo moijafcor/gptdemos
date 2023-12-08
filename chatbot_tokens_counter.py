@@ -39,8 +39,23 @@ def main(
     messages = []
     total_tokens = []
     tuning = {"role": "system", "content": personality}
-    llm_model = openai_llm_model_name
+    # This list is incomplete. Add more models as they become available.
+    supported_openai_models = ["gpt-4", "gpt-3.5-turbo", "text-embedding-ada-002"]
+    if openai_llm_model_name not in supported_openai_models:
+        print(
+            "Invalid OpenAI model name. Please choose from: ", supported_openai_models
+        )
+        sys.exit()
+    else:
+        llm_model = openai_llm_model_name
+
+    # @see https://github.com/openai/openai-cookbook/blob/main/examples/How_to_count_tokens_with_tiktoken.ipynb
     encoding_name = "cl100k_base"
+
+    if verbose == "yes" or verbose == "y":
+        is_verbose = True
+    else:
+        is_verbose = False
 
     client = OpenAI(
         api_key=os.environ.get("OPENAI_API_KEY"),
@@ -64,14 +79,14 @@ def main(
         )
 
         chatbot_response = response.choices[0].message.content
-        if verbose == "yes":
+        if is_verbose is True:
             print("***")
 
         # Add chatbot message to the conversation history
         messages.append({"role": "assistant", "content": chatbot_response})
 
         for i, message in enumerate(messages):
-            if verbose == "yes":
+            if is_verbose is True:
                 print(f"{i} - {message['role']}: {message['content']}")
                 total_tokens.append(
                     num_tokens_from_string(message["content"], encoding_name)
@@ -79,7 +94,7 @@ def main(
             else:
                 print(f"{message['role']}: {message['content']}")
 
-        if verbose == "yes":
+        if is_verbose is True:
             print(f"Tokens: {sum(total_tokens)}")
             print("***")
 
@@ -102,7 +117,7 @@ if __name__ == "__main__":
         "--model",
         type=str,
         default="gpt-3.5-turbo",
-        choices=["gpt-3.5-turbo"],
+        choices=["gpt-4", "gpt-3.5-turbo", "text-embedding-ada-002"],
         help="The name of the OpenAI LLM_MODEL to use. Defaults to 'gpt-3.5-turbo'.",
     )
     parser.add_argument(
@@ -110,7 +125,7 @@ if __name__ == "__main__":
         "--verbose",
         type=str,
         default="yes",
-        choices=["yes", "no"],
+        choices=["yes", "no", "y", "n"],
         help="Toggles printing message information and stats.",
     )
     args = parser.parse_args()
