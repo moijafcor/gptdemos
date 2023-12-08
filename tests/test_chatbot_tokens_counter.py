@@ -1,14 +1,14 @@
 import unittest
 from unittest.mock import patch
-from chatbot_tokens_counter import chatter
+from chatbot_tokens_counter import main
 
 
-class TestChatter(unittest.TestCase):
+class TestChatbotTokensCounter(unittest.TestCase):
     @patch(
         "builtins.input", side_effect=["Hello", "How are you?", "I'm fine, thank you!"]
     )
-    def test_chatter(self, mock_input):
-        chatter()
+    def test_chatbot_tokens_counter(self, mock_input):
+        main()
         # Add your assertions here
 
 
