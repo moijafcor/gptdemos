@@ -1,6 +1,6 @@
 import unittest
 from unittest.mock import patch
-from chatbot_tokens_counter import main
+from openai_chatbot_tokens_counter import main
 
 
 class TestChatbotTokensCounter(unittest.TestCase):
