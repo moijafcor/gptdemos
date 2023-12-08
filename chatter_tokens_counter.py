@@ -1,22 +1,19 @@
-# chatbot_tokens_counter.py
-import sys
+# chatter.py
 import os
 import argparse
 from openai import OpenAI
 import dotenv
-from bin.token_counter import num_tokens_from_string
+from lib.token_counter import num_tokens_from_string
 
 dotenv.load_dotenv()
 
 
-def main(
+def chatter(
     personality: str = "You are a sweet old helpful grandma",
     openai_llm_model_name: str = "gpt-3.5-turbo",
     verbose: str = "yes",
 ) -> None:
     """
-    quit, exit, or bye to exit the program
-
     A function that simulates a conversation between a user and a GPT personality using OpenAI's LLM_MODEL.
 
     The function initializes the conversation with a system message and then enters a loop where it prompts the user for input,
@@ -52,9 +49,6 @@ def main(
     while True:
         user_text = input("User: ")
 
-        if user_text == "quit" or user_text == "exit" or user_text == "bye":
-            sys.exit()
-
         # Add the user message to the conversation history
         messages.append({"role": "user", "content": user_text})
 
@@ -80,41 +74,33 @@ def main(
                 print(f"{message['role']}: {message['content']}")
 
         if verbose == "yes":
-            print(f"Tokens: {sum(total_tokens)}")
+            total_tokens_2 = sum(total_tokens)
+            print(f"Tokens: {total_tokens_2}")
             print("***")
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(
-        prog="chatbot_tokens_counter.py",
-        description="A script that simulates a conversation between a user and a GPT personality using OpenAI's LLM_MODEL.",
-        epilog="Type quit, exit, or bye to exit the program",
-    )
+    parser = argparse.ArgumentParser()
     parser.add_argument(
-        "-p",
         "--personality",
         type=str,
         default="You are a sweet old helpful grandma",
         help="The initial system message representing the personality of the grandma. Defaults to 'You are a sweet old helpful grandma'.",
     )
     parser.add_argument(
-        "-m",
         "--model",
         type=str,
         default="gpt-3.5-turbo",
-        choices=["gpt-3.5-turbo"],
         help="The name of the OpenAI LLM_MODEL to use. Defaults to 'gpt-3.5-turbo'.",
     )
     parser.add_argument(
-        "-v",
         "--verbose",
         type=str,
         default="yes",
-        choices=["yes", "no"],
         help="Toggles printing message information and stats.",
     )
     args = parser.parse_args()
-    main(
+    chatter(
         personality=args.personality,
         openai_llm_model_name=args.model,
         verbose=args.verbose.lower(),

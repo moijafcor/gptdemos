@@ -1,6 +1,6 @@
 # pdforacle.py
 
-from alejandroao_html_chatbot_template import css, bot_template, user_template
+from bin.alejandroao_html_chatbot_template import css, bot_template, user_template
 import dotenv
 from langchain.chains import LLMChain, ConversationalRetrievalChain
 from langchain.embeddings import OpenAIEmbeddings, HuggingFaceInstructEmbeddings
