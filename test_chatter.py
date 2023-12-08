@@ -1,6 +1,6 @@
 import unittest
 from unittest.mock import patch
-from chatter_tokens_counter import chatter
+from chatbot_tokens_counter import chatter
 
 
 class TestChatter(unittest.TestCase):
