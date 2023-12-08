@@ -1,10 +1,12 @@
 # chatbot_tokens_counter.py
 import sys
 import os
+import gnureadline
 import argparse
 from openai import OpenAI
 import dotenv
 from bin.token_counter import num_tokens_from_string
+from bin.token_explorer import token_explorer_from_string
 
 dotenv.load_dotenv()
 
@@ -13,6 +15,7 @@ def main(
     personality: str = "You are a sweet old helpful grandma",
     openai_llm_model_name: str = "gpt-3.5-turbo",
     verbose: str = "yes",
+    token_explorer: str = "no",
 ) -> None:
     """
     quit, exit, or bye to exit the program
@@ -57,6 +60,11 @@ def main(
     else:
         is_verbose = False
 
+    if token_explorer == "yes" or token_explorer == "y":
+        is_print_tokens = True
+    else:
+        is_print_tokens = False
+
     client = OpenAI(
         api_key=os.environ.get("OPENAI_API_KEY"),
     )
@@ -91,6 +99,14 @@ def main(
                 total_tokens.append(
                     num_tokens_from_string(message["content"], encoding_name)
                 )
+                if is_print_tokens is True:
+                    print(
+                        token_explorer_from_string(
+                            string=message["content"],
+                            encoding_name=encoding_name,
+                            verbose=False,
+                        )
+                    )
             else:
                 print(f"{message['role']}: {message['content']}")
 
@@ -128,9 +144,18 @@ if __name__ == "__main__":
         choices=["yes", "no", "y", "n"],
         help="Toggles printing message information and stats.",
     )
+    parser.add_argument(
+        "-t",
+        "--tokens",
+        type=str,
+        default="no",
+        choices=["yes", "no", "y", "n"],
+        help="Toggles printing tokens for each message.",
+    )
     args = parser.parse_args()
     main(
         personality=args.personality,
         openai_llm_model_name=args.model,
         verbose=args.verbose.lower(),
+        token_explorer=args.tokens.lower(),
     )
